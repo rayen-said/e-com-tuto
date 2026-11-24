@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background-color: #ffffff;
+    color: #0b1220;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: #0b1220;
+  }
+
+  ::selection {
+    background-color: #cffafe;
+    color: #0b1220;
+  }
+
+  /* Focus clavier toujours visible en thème clair (cyan 600).
+     Les classes utilitaires focus-visible:outline-none prennent la priorité
+     quand un anneau ring-2 est déjà défini sur l'élément. */
+  a:focus-visible,
+  button:focus-visible,
+  [role='tab']:focus-visible,
+  [role='menuitem']:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid #0891b2;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* Mode Inspection X-Ray (thème clair minimal) */
+.xray-layer {
+  position: relative;
+  transition: outline-color 0.2s ease, background-color 0.2s ease;
+}
+
+.xray-badge {
+  display: none;
+  position: absolute;
+  top: -13px;
+  left: 16px;
+  z-index: 30;
+  max-width: calc(100% - 32px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.xray-active .xray-layer {
+  outline: 2px dashed #0891b2;
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.xray-active .xray-badge {
+  display: inline-flex;
+  animation: xrayPop 0.2s ease-out;
+}
+
+@keyframes xrayPop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation flux de paquets (Aller Cyan -> Retour Émeraude) */
+@keyframes packetOutbound {
+  0% {
+    left: var(--start-pct, 10%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  100% {
+    left: var(--end-pct, 90%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+}
+
+@keyframes packetReturn {
+  0% {
+    left: var(--end-pct, 90%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  100% {
+    left: var(--start-pct, 10%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+}
+
+.packet-dot-out {
+  animation: packetOutbound 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.packet-dot-in {
+  animation: packetReturn 0.75s cubic-bezier(0.4, 0, 0.2, 1) 0.78s forwards;
+}
+
+/* Mise en évidence KPI mis à jour (sans ombre dure) */
+@keyframes kpiFlash {
+  0% {
+    background-color: #ecfeff;
+    border-color: #0891b2;
+  }
+  100% {
+    background-color: #ffffff;
+    border-color: #e2e8f0;
+  }
+}
+
+.kpi-flash {
+  animation: kpiFlash 1.4s ease-out;
+}
+
+/* Impulsion SSR Replay (liseré cyan subtil) */
+@keyframes ssrWave {
+  0% {
+    outline: 2px solid #0891b2;
+    outline-offset: 2px;
+  }
+  100% {
+    outline: 2px solid transparent;
+    outline-offset: 10px;
+  }
+}
+
+.ssr-pulse {
+  animation: ssrWave 0.9s ease-out;
+}
+
+/* Coloration syntaxique claire (contraste >= 4,5:1 sur #f8fafc et #ffffff) */
+.tok-kw {
+  color: #0e7490;
+  font-weight: 600;
+}
+.tok-fn {
+  color: #6d28d9;
+}
+.tok-str {
+  color: #047857;
+}
+.tok-num {
+  color: #b45309;
+}
+.tok-cmt {
+  color: #475569;
+  font-style: italic;
+}
+.tok-key {
+  color: #0b1220;
+  font-weight: 600;
+}
+.tok-cmd {
+  color: #be123c;
+  font-weight: 600;
+}
+
+/* Barres de défilement thématisées en clair */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #fafafa;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0891b2;
+}
